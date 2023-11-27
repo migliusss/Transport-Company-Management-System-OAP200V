@@ -37,6 +37,7 @@ public class UpdateCustomerFrame extends JFrame{
 		setTitle("Update Customer");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(500, 400);
+		setResizable(false);
 		
 		// Create a new JPanel for storing components. 
 		JPanel contentPanel = new JPanel();

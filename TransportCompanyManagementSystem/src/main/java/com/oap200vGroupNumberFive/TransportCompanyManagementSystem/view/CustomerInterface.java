@@ -16,25 +16,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class CustomerInterface extends JFrame{
 	private static final long serialVersionUID = 1L;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CustomerInterface frame = new CustomerInterface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
 	/**
 	 * Constructor for creating a customer frame.
@@ -44,6 +30,7 @@ public class CustomerInterface extends JFrame{
 		setTitle("Customer Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(500, 400);
+		setResizable(false);
 		
 		// Create a new JPanel for storing components. 
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
@@ -52,6 +39,7 @@ public class CustomerInterface extends JFrame{
         
         // Add padding around the content. 
         panel.setBorder(new EmptyBorder(80, 120, 80, 120)); 
+        
         
 		// Buttons for Customer Menu.
 		
@@ -82,20 +70,19 @@ public class CustomerInterface extends JFrame{
 				new UpdateCustomerFrame();
 			}
 		});
-		
 		buttonUpdateCustomer.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		panel.add(buttonUpdateCustomer);
 		
 		JButton buttonDeleteCustomer = new JButton("Delete Customer");
-		
 		// Action listener.
 		buttonDeleteCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new DeleteCustomerFrame();
 			}
 		});
-		
 		buttonDeleteCustomer.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		panel.add(buttonDeleteCustomer);
+		
+		setVisible(true);
 	}
 }
