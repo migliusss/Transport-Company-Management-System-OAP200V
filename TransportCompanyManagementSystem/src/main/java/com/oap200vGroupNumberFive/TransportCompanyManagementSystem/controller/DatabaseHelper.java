@@ -36,8 +36,8 @@ public class DatabaseHelper implements DatabaseInterface {
 	private final String DB_URL = "jdbc:mysql://localhost/classicmodels";
 
 	// Database credentials.
-	private static final String USERNAME = "root";
-	private static final String PASSWORD = "Tinatina1234";
+	private static final String USERNAME = "student";
+	private static final String PASSWORD = "student";
 
 	private Connection connection = null;
 	private Statement statement = null;

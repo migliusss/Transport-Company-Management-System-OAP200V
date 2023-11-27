@@ -38,7 +38,7 @@ public class ViewCustomersFrame extends JFrame{
 				"Phone", "AddressLine1", "AddressLine2", "City", "State", "PostalCode", "Country", 
 				"SalesRepEmployeeNumber", "CreditLimit"}; 
 		
-		// Fetch customers and store in ArrayList. 
+		// Fetch customers and store in list. 
 		List<Customer> customers;
 		try {
 			customers = databaseHelper.getCustomers();
