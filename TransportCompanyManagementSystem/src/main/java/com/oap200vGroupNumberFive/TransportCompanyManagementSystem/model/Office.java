@@ -6,79 +6,65 @@ package com.oap200vGroupNumberFive.TransportCompanyManagementSystem.model;
  */
 
 public class Office {
-	/**
-	 * Static counter track the last assigned officeCode
-	 */
-	private static int lastOfficeCode; // HUSK: Må telle antall rader i offices tabellen. 
-
-	private int officeCode;
-	
-	/**
-	 * The phone number of the office. 
-	 */
-	private String phone;
-	
-	/**
-	 * The territory of the office. 
-	 */
-	private String territory;
-	
-	/**
-	 * The address of the office. 
-	 */
-	private Address address;
+	private String officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory;
 	
 	/**
 	 * Constructor for creating a new office. 
+	 * 
+	 * @param officeCode      Office code. 
+	 * @param city            City. 
+	 * @param phone           Phone number. 
+	 * @param addressLine1    Address line 1. 
+	 * @param addressLine2    Address line 2.
+	 * @param state           State. 
+	 * @param country         Country. 
+	 * @param postalCode      Postal code. 
+	 * @param territory       Territory. 
 	 */
-	Office() {
-	}
-	
-	/**
-	 * Constructor for creating a new office. 
-	 * @param phone
-	 * @param territory
-	 * @param address
-	 */
-	Office(String phone, String territory, Address address) {
-		lastOfficeCode++;
+	Office(String officeCode, String city, String phone, String addressLine1,  String addressLine2, String state, String country, 
+			String postalCode, String territory) {
 		
-		this.officeCode = lastOfficeCode;
+		this.officeCode = officeCode;
+		this.city = city;
 		this.phone = phone;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.state = state;
+		this.country = country;
+		this.postalCode = postalCode;
 		this.territory = territory;
-		this.address = address;
-	}
-	
-	/**
-	 * Getter for lastOfficeCode.
-	 * @return lastOfficeCode
-	 */
-	public static int getLastOfficeCode() {
-		return lastOfficeCode;
-	}
-
-	/**
-	 * Setter for lastOfficeCode.
-	 * @param lastOfficeCode
-	 */
-	public static void setLastOfficeCode(int lastOfficeCode) {
-		Office.lastOfficeCode = lastOfficeCode;
 	}
 
 	/**
 	 * Getter for officeCode.
-	 * @return officeCode
+	 * @return Office code. 
 	 */
-	public int getOfficeCode() {
+	public String getOfficeCode() {
 		return officeCode;
 	}
 
 	/**
 	 * Setter for officeCode. 
-	 * @param officeCode
+	 * @param officeCode Office code to set. 
 	 */
-	public void setOfficeCode(int officeCode) {
+	public void setOfficeCode(String officeCode) {
 		this.officeCode = officeCode;
+	}
+	
+	/**
+	 * Getter for city. 
+	 * @return City. 
+	 */
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * Setter for city. 
+	 * @param city City to set. 
+	 */
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	/**
@@ -91,15 +77,95 @@ public class Office {
 
 	/**
 	 * Setter for phone.
-	 * @param phone
+	 * @param phone Phone number to set. 
 	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
+	/**
+	 * Getter for address line 1. 
+	 * @return Address line 1. 
+	 */
+	public String getAddressLine1() {
+		return addressLine1;
+	}
+
+	/**
+	 * Setter for address line 1. 
+	 * @param addressLine1 Address line 1 to set. 
+	 */
+	public void setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
+	}
+
+	/**
+	 * Getter for address line 2. 
+	 * @return Address line 2. 
+	 */
+	public String getAddressLine2() {
+		return addressLine2;
+	}
+
+	/**
+	 * Setter for address line 2. 
+	 * @param addressLine2 Address line 2 to set. 
+	 */
+	public void setAddressLine2(String addressLine2) {
+		this.addressLine2 = addressLine2;
+	}
+
+	/**
+	 * Getter for state. 
+	 * @return State. 
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * Setter for state. 
+	 * @param state State to set. 
+	 */
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	/**
+	 * Getter for country
+	 * @return Country. 
+	 */
+	public String getCountry() {
+		return country;
+	}
+
+	/**
+	 * Setter for country. 
+	 * @param country Country to set. 
+	 */
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	/**
+	 * Getter for postal code. 
+	 * @return Postal code. 
+	 */
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	/**
+	 * Setter for postal code. 
+	 * @param postalCode Postal code to set. 
+	 */
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
 
 	/**
 	 * Getter for territory. 
-	 * @return territory
+	 * @return Territory
 	 */
 	public String getTerritory() {
 		return territory;
@@ -107,35 +173,10 @@ public class Office {
 
 	/**
 	 * Setter for territory.
-	 * @param territory
+	 * @param territory Territory to set. 
 	 */
 	public void setTerritory(String territory) {
 		this.territory = territory;
 	}
 
-	/**
-	 * Getter for address. 
-	 * @return address
-	 */
-	public Address getAddress() {
-		return address;
-	}
-
-	/**
-	 * Setter for address.
-	 * @param address
-	 */
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	
-	/**
-	 * A method for displaying office information. 
-	 */
-	public void displayOfficeInfo () {
-		System.out.println("Office Code: " + this.officeCode);
-		System.out.println("Office Phone Number: "+ this.phone);
-		System.out.println("Office Territory: " + this.territory);
-		System.out.println("Office Address: " + this.address); 
-	}
 }
