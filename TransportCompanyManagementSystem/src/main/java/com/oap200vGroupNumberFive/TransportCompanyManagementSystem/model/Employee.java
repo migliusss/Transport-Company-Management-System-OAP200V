@@ -21,7 +21,7 @@ public class Employee {
 	 * @param reportsTo         Employee number the employee reports to. 
 	 * @param jobTitle          Job title. 
 	 */
-	Employee(int employeeNumber, String lastName, String firstName, String extension, String email, String officeCode, 
+	public Employee(int employeeNumber, String lastName, String firstName, String extension, String email, String officeCode, 
 			int reportsTo, String jobTitle) {
 		this.employeeNumber = employeeNumber;
 		this.lastName = lastName;

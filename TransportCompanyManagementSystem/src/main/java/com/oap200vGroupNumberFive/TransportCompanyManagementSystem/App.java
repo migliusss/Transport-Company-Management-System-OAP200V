@@ -1,6 +1,6 @@
 package com.oap200vGroupNumberFive.TransportCompanyManagementSystem;
 
-import com.oap200vGroupNumberFive.TransportCompanyManagementSystem.view.CustomerInterface;
+import com.oap200vGroupNumberFive.TransportCompanyManagementSystem.view.MainPage;
 
 /**
  * Hello world!
@@ -9,6 +9,6 @@ import com.oap200vGroupNumberFive.TransportCompanyManagementSystem.view.Customer
 public class App 
 {
     public static void main( String[] args ) {
-       new CustomerInterface();
+       new MainPage();
     }
 }

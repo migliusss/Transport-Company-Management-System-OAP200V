@@ -2,6 +2,9 @@ package com.oap200vGroupNumberFive.TransportCompanyManagementSystem.controller;
 
 import com.oap200vGroupNumberFive.TransportCompanyManagementSystem.model.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,11 +17,13 @@ import java.util.List;
 
 /**
  * @author Migle Adomonyte
+ * @author Elias Rønningen
  * 
- * The code is based on ExampleApp. 
+ * Based on provided ExampleApp. 
  * 
  * Class that provides details for the DB connectivity.
  * It assumes that you have proper MySQL JDBC driver.
+ * 
  * 
  * How to use this class?
  * 
@@ -33,7 +38,7 @@ import java.util.List;
 public class DatabaseHelper implements DatabaseInterface {
 
 	// JDBC driver name and database URL.
-	private final String DB_URL = "jdbc:mysql://localhost/classicmodels";
+	private final String DB_URL = "jdbc:mysql://localhost/classicmodels?autoReconnect=true&useSSL=false";
 
 	// Database credentials.
 	private static final String USERNAME = "student";
@@ -97,10 +102,10 @@ public class DatabaseHelper implements DatabaseInterface {
 		// Create a list of Customers. 
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		
-		// Open the database connection. 
-		this.open();
-		
 		try {
+			// Open the database connection. 
+			this.open();
+			
 			// Prepare the SQL statement. 
 			preparedStatement = connection.prepareStatement("SELECT * FROM customers");
 			
@@ -133,9 +138,9 @@ public class DatabaseHelper implements DatabaseInterface {
 			// Close the database connection. 
 			close();
 			
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
+		} catch (SQLException e) {
+            e.printStackTrace();
+        }
 		return customers;
 	}
 
@@ -144,10 +149,10 @@ public class DatabaseHelper implements DatabaseInterface {
 		// Variable for storing the Customer object. 
 		Customer customer = null;
 		
-		// Open the database connection. 
-		this.open();
-		
 		try {
+			// Open the database connection. 
+			this.open();
+			
 			// Prepare the SQL statement. 
 			preparedStatement = connection.prepareStatement("SELECT * FROM customers WHERE customerNumber=?");
 			
@@ -181,9 +186,9 @@ public class DatabaseHelper implements DatabaseInterface {
 			// Close the database connection. 
 			close();
 			
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
+		} catch (SQLException e) {
+            e.printStackTrace();
+        }
 		return customer;
 	}
 	
@@ -191,26 +196,26 @@ public class DatabaseHelper implements DatabaseInterface {
 	public int getLastCustomerNumber() throws SQLException {
 		int lastCustomerNumber = 0;
 		
-		// Open the database connection. 
-		open();
-		
 		try {
+			// Open the database connection. 
+			open();
+			
 			// Prepare the SQL statement. 
 			preparedStatement = connection.prepareStatement("SELECT MAX(customerNumber) FROM customers");
 			
 			// Execute the SQL statement. 
 			resultSet = preparedStatement.executeQuery();
 			
-			// Check that the results exist. 
+			// Check that the results are not empty. 
 			if (resultSet.next()) {
 				lastCustomerNumber = resultSet.getInt(1);   
 			}         
 			// Close the database connection. 
 			close();
 			
-		} catch(Exception exc) {
-			exc.printStackTrace();
-		}
+		} catch (SQLException e) {
+            e.printStackTrace();
+        }
 		return lastCustomerNumber;
 	}
 
@@ -326,19 +331,56 @@ public class DatabaseHelper implements DatabaseInterface {
 	
 	@Override
 	public List<Employee> getEmployees() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		// Create a list of Customers. 
+		ArrayList<Employee> employees = new ArrayList<Employee>();
+		
+		try {
+			// Open the database connection. 
+			this.open();
+			
+			// Prepare the SQL statement. 
+			preparedStatement = connection.prepareStatement("SELECT * FROM employees");
+			
+			// Execute the SQL statement. 
+			resultSet = preparedStatement.executeQuery();
+			
+			// A while loop for collecting results and creating Employee objects. 
+			while(resultSet.next()) {
+				int employeeNumber = resultSet.getInt("employeeNumber");
+				String lastName = resultSet.getString("lastName");
+				String firstName = resultSet.getString("firstName");
+				String extensions = resultSet.getString("extension");
+				String email = resultSet.getString("email");
+				String officeCode = resultSet.getString("officeCode");
+				int reportsTo = resultSet.getInt("reportsTo");
+				String jobTitle = resultSet.getString("jobTitle");
+				
+				Employee current = new Employee(employeeNumber, lastName, firstName, extensions, 
+						email, officeCode, reportsTo, jobTitle);
+				
+				// Add the Employee object to the Customer ArrayList.
+				employees.add(current);
+			}
+			
+			// Close the database connection. 
+			close();
+			
+		} catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		
+		return employees;
 	}
-
+	
 	@Override
 	public List<Integer> getEmployeeNumber() throws SQLException {
 		// Create list for storing employee numbers. 
 		List<Integer> employeeNumbers = new ArrayList<>();
 		
-		// Open database connection.
-		open();
-		
 		try {
+			// Open database connection.
+			open();
+			
 			// Prepare the SQL statement. 
 			preparedStatement = connection.prepareStatement("SELECT employeeNumber FROM employees");
 			
@@ -353,18 +395,179 @@ public class DatabaseHelper implements DatabaseInterface {
 	        
 			// Close the database connection. 
 			close();
+			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
         return employeeNumbers;
 	}
 	
+	@Override
+	public Employee getEmployeeByNumber(int employeeNumber) throws SQLException {
+		// Variable for storing the Customer object. 
+		Employee employee = null;
+		
+		try {
+			// Open the database connection. 
+			this.open();
+			
+			// Prepare the SQL statement. 
+			preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE employeeNumber=?");
+			
+			// Set the parameter values for the SQL statement. 
+			preparedStatement.setInt(1, employeeNumber);
+			
+			// Execute the SQL statement. 
+			resultSet = preparedStatement.executeQuery();
+			
+			// Check that the results exist. 
+			if (resultSet.next()) {
+				String lastName = resultSet.getString("lastName");
+				String firstName = resultSet.getString("firstName");
+				String extensions = resultSet.getString("extension");
+				String email = resultSet.getString("email");
+				String officeCode = resultSet.getString("officeCode");
+				int reportsTo = resultSet.getInt("reportsTo");
+				String jobTitle = resultSet.getString("jobTitle");
+				
+				// Create an Employee object based on the data. 
+				employee = new Employee(employeeNumber, lastName, firstName, extensions, 
+						email, officeCode, reportsTo, jobTitle);
+			}
+			
+			// Close the database connection. 
+			close();
+			
+		} catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return employee;
+	}
+
+	@Override
+	public int getLastEmployeeNumber() throws SQLException {
+		int lastEmployeeNumber = 0;
+		
+		try {
+			// Open the database connection. 
+			open();
+			
+			// Prepare the SQL statement. 
+			preparedStatement = connection.prepareStatement("SELECT MAX(employeeNumber) FROM employees");
+			
+			// Execute the SQL statement. 
+			resultSet = preparedStatement.executeQuery();
+			
+			// Check that the results are not empty. 
+			if (resultSet.next()) {
+				lastEmployeeNumber = resultSet.getInt(1);   
+			}         
+			// Close the database connection. 
+			close();
+			
+		} catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return lastEmployeeNumber;
+	}
 	
+	@Override
+	public void addEmployee(int employeeNumber, String lastName, String firstName, String extension, String email,
+			String officeCode, int reportsTo, String jobTitle) throws SQLException {
+		try {
+			// Open the database connection. 
+			open();
+			
+			// Prepare the SQL statement. 
+			preparedStatement = connection.prepareStatement("INSERT INTO employees "
+					+ "(employeeNumber, lastName, firstName, extension, email, officeCode, reportsTo, jobTitle) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+			
+			// Set the parameter values for the SQL statement. 
+			preparedStatement.setInt(1, employeeNumber);
+			preparedStatement.setString(2, lastName);
+			preparedStatement.setString(3, firstName);
+			preparedStatement.setString(4, extension);
+			preparedStatement.setString(5, email);
+			preparedStatement.setString(6, officeCode);
+			preparedStatement.setInt(7, reportsTo);
+			preparedStatement.setString(8, jobTitle);
+			
+			// Execute the SQL statement. 
+			preparedStatement.executeUpdate();
+			
+			// Close the database connection. 
+			close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void updateEmployee(int employeeNumber, String lastName, String firstName, String extension, String email,
+			String officeCode, int reportsTo, String jobTitle) throws SQLException {
+		try {
+			// Open database connection. 
+			open();
+			
+			// Prepare the SQL statement. 
+			preparedStatement = connection.prepareStatement("UPDATE employees SET lastName=?, "
+					+ "firstName=?, extension=?, email=?, officeCode=?, reportsTo=?, jobTitle=? WHERE employeeNumber=?");
+			
+			// Set the parameter values for the SQL statement. 
+			preparedStatement.setString(1, lastName);
+			preparedStatement.setString(2, firstName);
+			preparedStatement.setString(3, extension);
+			preparedStatement.setString(4, email);
+			preparedStatement.setString(5, officeCode);
+			preparedStatement.setInt(6, reportsTo);
+			preparedStatement.setString(7, jobTitle);
+			preparedStatement.setInt(8, employeeNumber);
+			
+			// Execute the SQL statement. 
+			preparedStatement.executeUpdate();
+						
+			// Close the database connection. 
+			close();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void deleteEmployee(int employeeNumber) throws SQLException {
+		try {
+			// Open database connection. 
+			open();
+			
+			// Prepare the SQL statement. 
+			preparedStatement = connection.prepareStatement("DELETE FROM employees WHERE employeeNumber=?");
+			
+			// Set the parameter values for the SQL statement. 
+			preparedStatement.setInt(1, employeeNumber);
+			
+			// Execute the SQL statement. 
+			preparedStatement.executeUpdate();
+						
+			// Close the database connection. 
+			close();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
 	/**********************
 	 *                    *
 	 *  ORDER FUNCTIONS   *
 	 *                    *
 	 **********************/
+	
 	
 	
 	
@@ -376,6 +579,142 @@ public class DatabaseHelper implements DatabaseInterface {
 	 **********************/
 	
 	
+    @Override
+    public List<Product> getProducts() throws SQLException {
+    	// Create list for storing products.  
+        ArrayList<Product> products = new ArrayList<Product>();
+        
+        try {
+            // Open database connection.
+            this.open();
+            
+        	// Prepare the SQL statement. 
+        	preparedStatement = connection.prepareStatement("SELECT * FROM products");
+        	
+        	// Execute the SQL statement. 
+        	resultSet = preparedStatement.executeQuery();
+
+			// Iterate through the results and add products to the list. 
+            while (resultSet.next()) {
+                String productCode = resultSet.getString("productCode");
+                String productName = resultSet.getString("productName");
+                String productLine = resultSet.getString("productLine");
+                String productScale = resultSet.getString("productScale");
+                String productVendor = resultSet.getString("productVendor");
+                String productDescription = resultSet.getString("productDescription");
+                int quantityInStock = resultSet.getInt("quantityInStock");
+                float buyPrice = resultSet.getFloat("buyPrice");
+                float MSRP = resultSet.getFloat("MSRP");
+
+                Product current = new Product(productCode, productName, productLine, productScale, 
+                		productVendor, productDescription, quantityInStock, buyPrice, MSRP);
+				// Add the Product object to the Product ArrayList.
+                products.add(current);
+            }
+            
+			// Close the database connection. 
+            close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+    
+	@Override
+    public List<String> getProductName() throws SQLException {
+    	// Create list for storing product names. 
+        ArrayList<String> productNames = new ArrayList<String>();
+        
+        try {
+            // Open database connection.
+            this.open();
+            
+        	// Prepare the SQL statement. 
+        	preparedStatement = connection.prepareStatement("SELECT DISTINCT productName FROM products");
+        	
+        	// Execute the SQL statement. 
+        	resultSet = preparedStatement.executeQuery();
+        	
+			// Iterate through the results and add the product names to the list. 
+            while (resultSet.next()) {
+                String fetchedProductName = resultSet.getString("productName");
+                
+                // Check that the results are not empty. 
+                if (fetchedProductName != null) {
+                    productNames.add(fetchedProductName);
+                }
+
+            }
+            
+			// Close the database connection. 
+            close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productNames;
+    }
+
+	@Override
+    public int getQuantityByName(String selectedProductName) throws SQLException {
+        // Variable for storing the product quantity. 
+        int quantity = 0;
+        
+        try {
+            // Open database connection.
+            this.open();
+            
+        	// Prepare the SQL statement. 
+            preparedStatement = connection.prepareStatement("SELECT * FROM products WHERE productName = ?");
+            
+			// Set the parameter values for the SQL statement. 
+            preparedStatement.setString(1, selectedProductName);
+
+        	// Execute the SQL statement. 
+            resultSet = preparedStatement.executeQuery();
+            
+			// Check that the results are not empty. 
+            if (resultSet.next()) {
+                quantity = resultSet.getInt("quantityInStock");
+            }
+            
+			// Close the database connection. 
+            close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return quantity;
+    }
+	
+	@Override
+    public void updateQuantityInStock(String productName, int quantityToUpdate, boolean isAddition) throws SQLException {
+		try {
+			// Open the database connection
+			open(); 
+			
+            // Determine the operation, addition or subtraction. 
+            String operator = (isAddition) ? "+" : "-";
+
+            // Prepare the SQL statement to update the quantity in stock by adding or subtracting. 
+            preparedStatement = connection.prepareStatement(
+            		"UPDATE products SET quantityInStock = quantityInStock " + operator + " ? WHERE productName = ?");
+
+            // Set the parameters in the prepared statement. 
+            preparedStatement.setInt(1, quantityToUpdate);
+            preparedStatement.setString(2, productName);
+
+            // Execute the update statement
+            preparedStatement.executeUpdate();
+            
+			// Close the database connection. 
+            close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	
 	/**********************
@@ -385,6 +724,35 @@ public class DatabaseHelper implements DatabaseInterface {
 	 **********************/
 	
 	
+	@Override
+	public List<String> getOfficeCode() throws SQLException {
+		// Create list for storing employee numbers. 
+		List<String> officeCodes = new ArrayList<>();
+		
+		try {
+			// Open database connection.
+			open();
+			
+			// Prepare the SQL statement. 
+			preparedStatement = connection.prepareStatement("SELECT officeCode FROM offices");
+			
+			// Execute the SQL statement. 
+			resultSet = preparedStatement.executeQuery();
+			
+			// Iterate through the results and add the officeCode to the list. 
+	        while (resultSet.next()) {
+	            String officeCode = resultSet.getString("officeCode");
+	            officeCodes.add(officeCode);
+	        }
+	        
+			// Close the database connection. 
+			close();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+        return officeCodes;
+	}
 	
 	
 	/**********************
@@ -395,4 +763,78 @@ public class DatabaseHelper implements DatabaseInterface {
 	
 	
 	
+	
+	/**********************
+	 *                    *
+	 *   FILE FUNCTIONS   *
+	 *                    *
+	 **********************/
+	
+
+	@Override
+    public List<String> getTableNames() throws SQLException {
+    	// Create list for storing table names. 
+        List<String> tableNames = new ArrayList<>();
+
+        try {
+            // Open database connection.
+            this.open();
+            
+        	// Prepare the SQL statement. 
+            preparedStatement = connection.prepareStatement("SHOW TABLES");
+
+        	// Execute the SQL statement. 
+            resultSet = preparedStatement.executeQuery();
+            
+			// Iterate through the results and add the table names to the list. 
+            while (resultSet.next()) {
+                String tableName = resultSet.getString(1);
+                tableNames.add(tableName);
+            }
+            
+			// Close the database connection. 
+            close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tableNames;
+    }
+
+	@Override
+    public void saveTableToFile(String tableName, String filePath) throws SQLException {
+        try {
+            open(); // Open the database connection
+
+            // Prepare the SQL statement to select all rows from the specified table. 
+            preparedStatement = connection.prepareStatement("SELECT * FROM " + tableName);
+            
+        	// Execute the SQL statement. 
+            resultSet = preparedStatement.executeQuery();
+
+            // Write the results to the specified file. 
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            
+            // Write column names as headers
+            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                    writer.write(resultSet.getMetaData().getColumnName(i) + "\t");
+            }
+            
+            writer.write("\n");
+
+            // Iterate through the results and write each row to the file. 
+            while (resultSet.next()) {
+            	for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+            		writer.write(resultSet.getString(i) + "\t");
+            	}
+            	writer.write("\n");
+            }
+            
+			// Close the database connection. 
+            close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

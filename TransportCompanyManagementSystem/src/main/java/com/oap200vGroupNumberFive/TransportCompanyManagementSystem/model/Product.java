@@ -8,7 +8,7 @@ package com.oap200vGroupNumberFive.TransportCompanyManagementSystem.model;
 public class Product {
 	private int quantityInStock;
 	private String productCode, productName, productLine, productScale, productVendor, productDescription;
-	private double buyPrice, msrp;
+	private float buyPrice, MSRP;
 	
 	/**
 	 * Constructor for creating a new product. 
@@ -21,11 +21,11 @@ public class Product {
 	 * @param productDescription    Product description. 
 	 * @param quantityInStock       Quantity in stock. 
 	 * @param buyPrice              Buy price. 
-	 * @param msrp                  Manufacturer's suggested retail price. 
+	 * @param MSRP                  Manufacturer's suggested retail price. 
 	 */
-	Product(String productCode, String productName, String productLine, String productScale, 
-			String productVendor, String productDescription, int quantityInStock, double buyPrice, 
-			double msrp) {
+	public Product(String productCode, String productName, String productLine, String productScale, 
+			String productVendor, String productDescription, int quantityInStock, float buyPrice, 
+			float MSRP) {
 		this.productCode = productCode;
 		this.productName = productName;
 		this.productLine = productLine;
@@ -34,7 +34,7 @@ public class Product {
 		this.productDescription = productDescription;
 		this.quantityInStock = quantityInStock;
 		this.buyPrice = buyPrice;
-		this.msrp = msrp;
+		this.MSRP = MSRP;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class Product {
 	 * Setter for buy price. 
 	 * @param buyPrice Buy price to set. 
 	 */
-	public void setBuyPrice(double buyPrice) {
+	public void setBuyPrice(float buyPrice) {
 		this.buyPrice = buyPrice;
 	}
 
@@ -169,16 +169,16 @@ public class Product {
 	 * Getter for manufacturer's suggested retail price. 
 	 * @return Manufacturer's suggested retail price. 
 	 */
-	public double getMsrp() {
-		return msrp;
+	public double getMSRP() {
+		return MSRP;
 	}
 
 	/**
 	 * Setter for manufacturer's suggested retail price. 
-	 * @param msrp Manufacturer's suggested retail price to set. 
+	 * @param MSRP Manufacturer's suggested retail price to set. 
 	 */
-	public void setMsrp(double msrp) {
-		this.msrp = msrp;
+	public void setMSRP(float MSRP) {
+		this.MSRP = MSRP;
 	}
 	
 	

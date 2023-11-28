@@ -15,7 +15,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class CustomerInterface extends JFrame{
@@ -27,18 +29,21 @@ public class CustomerInterface extends JFrame{
 	public CustomerInterface() {
 		// Create a new JFrame. 
 		setTitle("Customer Menu");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(500, 400);
 		setResizable(false);
 		
 		// Create a new JPanel for storing components. 
-        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
+        JPanel panel = new JPanel(new GridLayout(5, 1, 5, 5));
         panel.setBackground(new Color(248, 249, 250));
         setContentPane(panel);
         
-        // Add padding around the content. 
-        panel.setBorder(new EmptyBorder(80, 120, 80, 120)); 
+		JLabel customerLabel = new JLabel("Customers", SwingConstants.CENTER);
+		customerLabel.setFont(new Font("SansSerif", Font.PLAIN, 24));
+		panel.add(customerLabel);
         
+        // Add padding around the content. 
+        panel.setBorder(new EmptyBorder(42, 120, 80, 120)); 
         
 		// Buttons for Customer Menu.
 		

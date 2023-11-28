@@ -1,16 +1,10 @@
 package com.oap200vGroupNumberFive.TransportCompanyManagementSystem.view;
 
-/**
- * @author Migle Adomonyte
- * 
- * This class represents a frame for updating an existing customer in the database. 
- */
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -22,19 +16,26 @@ import javax.swing.border.EmptyBorder;
 
 import com.oap200vGroupNumberFive.TransportCompanyManagementSystem.controller.DatabaseHelper;
 import com.oap200vGroupNumberFive.TransportCompanyManagementSystem.model.Customer;
+import com.oap200vGroupNumberFive.TransportCompanyManagementSystem.model.Employee;
 
-public class UpdateCustomerFrame extends JFrame{
+/**
+ * @author Migle Adomonyte
+ * 
+ * This class represents a frame for updating an existing employee in the database. 
+ */
+
+public class UpdateEmployeeFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private DatabaseHelper databaseHelper = new DatabaseHelper();
-	private JTextField customerNumberTextField;
+	private JTextField employeeNumberTextField;
 	WarningMessages warningMessage = new WarningMessages();
-
+	
 	/**
-	 * Constructor for creating UpdateCustomerFrame. 
+	 * Constructor for creating UpdateEmployeeFrame. 
 	 */
-	public UpdateCustomerFrame() {
+	public UpdateEmployeeFrame() {
 		// Create a new JFrame. 
-		setTitle("Update Customer");
+		setTitle("Update Employee");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(500, 400);
 		setResizable(false);
@@ -48,34 +49,34 @@ public class UpdateCustomerFrame extends JFrame{
         contentPanel.setBorder(new EmptyBorder(100, 120, 100, 120)); 
         
         // Add subtext. 
-        JLabel subtextLabel = new JLabel("Enter the customer number for update");
+        JLabel subtextLabel = new JLabel("Enter the employee number for update");
         subtextLabel.setForeground(Color.GRAY);
         contentPanel.add(subtextLabel);
 	    
 		// Create form labels and text fields. 
-		JLabel lblCustomerNumber = new JLabel("Customer Number");
-		lblCustomerNumber.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		contentPanel.add(lblCustomerNumber);
+		JLabel lblEmployeeNumber = new JLabel("Employee Number");
+		lblEmployeeNumber.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		contentPanel.add(lblEmployeeNumber);
 		
-		customerNumberTextField = new JTextField();
-		customerNumberTextField.setColumns(10);
-		contentPanel.add(customerNumberTextField);
+		employeeNumberTextField = new JTextField();
+		employeeNumberTextField.setColumns(10);
+		contentPanel.add(employeeNumberTextField);
 		
-        JButton searchCustomer = new JButton("Search");
-        searchCustomer.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        JButton searchEmployee = new JButton("Search");
+        searchEmployee.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		// Action listener for the "Search" button.
-        searchCustomer.addActionListener(new ActionListener() {
+        searchEmployee.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	try {
-            		// Create a Customer object for storing data about the customer.
-            		Customer customer = databaseHelper.getCustomerByNumber(Integer.parseInt(customerNumberTextField.getText()));
+            		// Create an Employee object for storing data about the employee.
+            		Employee employee = databaseHelper.getEmployeeByNumber(Integer.parseInt(employeeNumberTextField.getText()));
             		
-            		// If statement for checking that the customer exists in the database. 
-            		if (customer != null) {
-            			new UpdateCustomerDetailsFrame(customer);
+            		// If statement for checking that the employee exists in the database. 
+            		if (employee != null) {
+            			new UpdateEmployeeDetailsFrame(employee);
             		}
             		else {
-            			warningMessage.displayMessage("Customer not found!");
+            			warningMessage.displayMessage("Employee not found!");
             		}
             	}catch(SQLException e1) {
 					e1.printStackTrace();
@@ -83,11 +84,10 @@ public class UpdateCustomerFrame extends JFrame{
             	}
             }
         });
-        contentPanel.add(searchCustomer);
+        contentPanel.add(searchEmployee);
         
         add(contentPanel);
         
 		setVisible(true);
 	}
 }
-
