@@ -40,10 +40,11 @@ public class ViewCustomersFrame extends JFrame{
 		
 		// Fetch customers and store in list. 
 		List<Customer> customers;
+		
 		try {
 			customers = databaseHelper.getCustomers();
-		}catch(SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error retrieving data from the database." + e.getMessage(), 
+		} catch(SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error in retrieving data from the database. " + e.getMessage(), 
             		"Database Error", JOptionPane.ERROR_MESSAGE);
             return;
 		}
@@ -77,6 +78,8 @@ public class ViewCustomersFrame extends JFrame{
         header.setFont(header.getFont().deriveFont(Font.BOLD, 12));
         // Add the scrollpane. 
         add(scrollPane, BorderLayout.CENTER);
+        // Automatic resizing
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         
         setVisible(true);
 	}

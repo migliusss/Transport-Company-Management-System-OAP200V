@@ -36,6 +36,7 @@ public class UpdateCustomerDetailsFrame extends JFrame{
 	WarningMessages warningMessage = new WarningMessages();
 
 	/**
+	 * Constructor for creating a frame for updating the customer information. 
 	 * 
 	 * @param customer The customer information to be displayed. 
 	 */
@@ -167,6 +168,7 @@ public class UpdateCustomerDetailsFrame extends JFrame{
 							newCreditLimit);
 					// Display the message and close the frame. 
 					warningMessage.displayMessage("The customer has been successfully updated!");
+					
         			dispose();
 				} catch (SQLException e1) {
 					e1.printStackTrace();

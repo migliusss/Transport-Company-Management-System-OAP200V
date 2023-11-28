@@ -73,6 +73,7 @@ public class AddCustomerFrame extends JFrame{
         contentPanel.add(new JLabel(""));
 		
 		// Create form labels and text fields. 
+        
 		JLabel lblCustomerName = new JLabel("Customer Name *");
 		lblCustomerName.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		contentPanel.add(lblCustomerName);
